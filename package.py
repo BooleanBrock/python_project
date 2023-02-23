@@ -5,26 +5,26 @@
 #In the Package object class I created a method to determine the package status of: at hub, en route, delivered - 7 lines of code
 
 class Package:
-    def __init__(self, package_id, address, deadline, city, zip_code, weight, status):
-        self.package_id = package_id
+    def __init__(self, id, address, city, state, zip_code, deadline, weight, status):
+        self.id = id
         self.address = address
-        self.deadline = deadline
         self.city = city
+        self.state = state
         self.zip_code = zip_code
+        self.deadline = deadline
         self.weight = weight
         self.status = status
         self.depart = None
         self.delivery = None
 
     def __str__(self):
-        return f"{self.package_id} {self.address} {self.deadline} {self.city} \
-            {self.zip_code} {self.weight} {self.status} {self.depart} {self.delivery}"      
+        return f"{self.id}, {self.address}, {self.deadline}, {self.city}, {self.zip_code}, {self.weight}, {self.status} {self.depart}, {self.delivery}"  
 
-    def status_report(self, convert_timedelta):
-        if self.delivery < convert_timedelta:
-            self.status = "Delivered!"
-        elif self.depart > convert_timedelta:
+    def status_report(self, converted_time):
+        if self.depart > converted_time:
             self.status = "En route!"
+        elif self.delivery < converted_time:
+            self.status = "Delivered!"
         else:
             self.status = "At Hub!"
 
