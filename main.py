@@ -45,11 +45,11 @@ def get_address(address):
     return -1
 
 
-truckA = Truck(16, 18, None, [1, 2, 4, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21], 0.0, "4001 South 700 East", datetime.timedelta(hours = 8))
+truckA = Truck(16, 18, None, [1, 13, 14, 15, 16, 20, 21, 29, 30, 31, 34, 37, 40], 0.0, "4001 South 700 East", datetime.timedelta(hours = 8))
 
-truckB = Truck(16, 18, None, [3, 9, 17, 18, 22, 23, 24, 26, 27, 29, 30, 31, 33, 34, 36, 38], 0.0, "4001 South 700 East", datetime.timedelta(hours = 9, minutes = 5))
+truckB = Truck(16, 18, None, [3, 6, 18, 19, 23, 24, 25, 26, 27, 36, 38], 0.0, "4001 South 700 East", datetime.timedelta(hours = 9, minutes = 5))
 
-truckC = Truck(16, 18, None, [6, 25, 28, 32, 35, 37, 39, 40], 0.0, "4001 South 700 East", datetime.timedelta(hours = 10, minutes = 20))
+truckC = Truck(16, 18, None, [2, 4, 5, 7, 8, 9, 10, 11, 12, 17, 22, 28, 32, 33, 35, 39], 0.0, "4001 South 700 East", datetime.timedelta(hours = 10, minutes = 20))
 
 pack_hash_table = ChainHash()
 
@@ -64,7 +64,7 @@ def deliver(truck):
     truck.package.clear()
 
     while len(pending_delivery) > 0:
-        closest_address = 2000
+        closest_address = 3000
         next_package = None
         for package in pending_delivery:
             truckAddress = get_address(truck.address)
@@ -88,45 +88,46 @@ def deliver(truck):
 
 deliver(truckA)
 deliver(truckC)
-truckB.departure_time = min(truckA.time, truckC.time)
+#truckB.departure_time = min(truckA.time, truckC.time)
 deliver(truckB)
 
 class Main:
     print("Western Governors University Parcel Service (WGUPS)")
     print("Route total mileage: ")
     print(truckA.miles + truckB.miles + truckC.miles)
-    user_input = input("Would you like to review package info? If so, please type 'yes' "
-    " if no, any other command will exit program")
-    if user_input == "yes":
+    user_input = input("To see package info, please type 'go', otherwise any other command"
+    " will exit program")
+    if user_input == "go":
         try:
             user_entry = input("To check status of package, please enter time using the HH:MM:SS format")
             (hours, mins, secs) = user_entry.split(":")
             change_time = datetime.timedelta(hours = int(hours), minutes = int(mins), seconds = int(secs))
             next_input = input("If you would like to see the status of a single package, please type 'single'."
             " To see the status of all packages, please type 'all'.")
-            if user_entry == "single":
+            if next_input == "single":
                 try:
                     single_pack = input("Enter package ID number")
                     package = pack_hash_table.find(int(single_pack))
-                    package.status_report(change_time)
-                    print(str(package))
+                    package.status_report(change_time) 
+                    print(str(package)) 
                 except ValueError:
-                    print("Invalid entry. CLosing program")
+                    print("Invalid entry. Closing program.")
                     exit()
             elif next_input == "all":
                 try:
+                    print("ID      Address       City     Zip     Weight      Due      Status      Departure      Delivery")
                     for package_id in range(1, 41):
                         package = pack_hash_table.find(package_id)
                         package.status_report(change_time)
                         print(str(package))
                 except ValueError:
-                    print("Invalid entry. CLosing program")
+                    print("Invalid entry. Closing program.")
                     exit()
             else:
                 exit()
         except ValueError:
-            print("Invalid entry. CLosing program")
+            print("Invalid entry. Closing program.")
             exit()
-    elif user_input != "yes":
-        print("Invalid entry. CLosing program")
+    elif user_input != "go":
+        print("Invalid entry. Closing program.")
         exit()

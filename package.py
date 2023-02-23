@@ -18,20 +18,12 @@ class Package:
         self.delivery = None
 
     def __str__(self):
-        return f"{self.id}, {self.address}, {self.deadline}, {self.city}, {self.zip_code}, {self.weight}, {self.status} {self.depart}, {self.delivery}"  
+        return f"{self.id}, {self.address}, {self.city}, {self.zip_code}, {self.weight}, {self.deadline}, {self.status}, {self.depart}, {self.delivery}"  
 
     def status_report(self, converted_time):
-        if self.depart > converted_time:
-            self.status = "En route!"
-        elif self.delivery < converted_time:
+        if self.delivery < converted_time:
             self.status = "Delivered!"
-        else:
+        elif self.depart < converted_time:
+            self.status = "En route!"
+        elif self.depart > converted_time:
             self.status = "At Hub!"
-
-#package ID number
-#delivery address
-#delivery deadline
-#delivery city
-#delivery zip code
-#package weight
-#delivery status (e.g., delivered, en route)
