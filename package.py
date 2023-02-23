@@ -4,34 +4,29 @@
 
 #In the Package object class I created a method to determine the package status of: at hub, en route, delivered - 7 lines of code
 
+#create class for package objects
 class Package:
-    def __init__(self, package_id, address, deadline, city, zip_code, weight, status):
-        self.package_id = package_id
+    def __init__(self, id, address, city, state, zip_code, deadline, weight, status):
+        self.id = id
         self.address = address
-        self.deadline = deadline
         self.city = city
+        self.state = state
         self.zip_code = zip_code
+        self.deadline = deadline
         self.weight = weight
         self.status = status
         self.depart = None
         self.delivery = None
 
+#Create method to return string containing attributes of package object
     def __str__(self):
-        return f"{self.package_id} {self.address} {self.deadline} {self.city} \
-            {self.zip_code} {self.weight} {self.status} {self.depart} {self.delivery}"      
+        return f"{self.id}, {self.address}, {self.city}, {self.zip_code}, {self.weight}, {self.deadline}, {self.status}, {self.depart}, {self.delivery}"  
 
-    def status_report(self, convert_timedelta):
-        if self.delivery < convert_timedelta:
+#Create method to report status of package at any given time in delivery process
+    def status_report(self, converted_time):
+        if self.delivery < converted_time:
             self.status = "Delivered!"
-        elif self.depart > convert_timedelta:
+        elif self.depart < converted_time:
             self.status = "En route!"
-        else:
+        elif self.depart > converted_time:
             self.status = "At Hub!"
-
-#package ID number
-#delivery address
-#delivery deadline
-#delivery city
-#delivery zip code
-#package weight
-#delivery status (e.g., delivered, en route)
